@@ -50,6 +50,7 @@ public class Exchange
     public void addMobile(MobilePhone mp)
     {
         mobps.Store(mp);
+        ///System.out.println(this.uid);
         return;
     }
     public void delMobile(MobilePhone mp)
@@ -65,15 +66,15 @@ public class Exchange
         return;
     }
     
-    public static void main(String[] args) 
-    {
-        Exchange ex = new Exchange(123);
-        Exchange ex2 = new Exchange(456);
-        ex.addChild(ex2);
-        
-        System.out.println(ex.childll.numChildren());
-        System.out.println(ex.childll.ithChild(0).uid);
-        MobilePhone mob = null;
-        
-    }
+//    public static void main(String[] args) 
+//    {
+//        Exchange ex = new Exchange(123);
+//        Exchange ex2 = new Exchange(456);
+//        ex.addChild(ex2);
+//        
+//        System.out.println(ex.childll.numChildren());
+//        System.out.println(ex.childll.ithChild(0).uid);
+//        MobilePhone mob = null;
+//        
+//    }
 }

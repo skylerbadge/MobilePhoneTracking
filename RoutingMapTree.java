@@ -27,13 +27,14 @@ public class RoutingMapTree
         }
         return false;
     }
-    public void switchOn(MobilePhone a, Exchange b)//add exception
+    public void switchOn(MobilePhone a, Exchange b)//add exception check leaf
     {
         ///System.out.println("adding to "+b.isroot()+b.uid+a.status+a.id);
         if (!a.status())
         {
             
             b.addMobile(a);
+            a.base=b;
             ///System.out.println("added to "+b.uid);
             while(!b.isroot())
             {
@@ -48,7 +49,17 @@ public class RoutingMapTree
     {
         if (a.status())
         {
-            a.switchOff();            
+            a.switchOff();
+            Exchange b = a.base;
+            ///System.out.println("boho"+b.uid);
+            b.delMobile(a);
+            ///System.out.println("added to "+b.uid);
+            while(!b.isroot())
+            {
+                b=b.parent();
+                b.delMobile(a);
+                ///System.out.println("added to "+b.uid);
+            }
         }
     }
     public Exchange getExchange(int id)//add exception
