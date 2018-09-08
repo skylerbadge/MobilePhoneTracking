@@ -95,7 +95,7 @@ public class RoutingMapTree
         int a,b;
         Exchange ex,ex2;
         //System.out.println(actionMessage);
-        try {
+        //try {
             switch(action)
             {
                 case "addExchange":
@@ -105,7 +105,9 @@ public class RoutingMapTree
                     //System.out.println(ex.isroot());
                     if (ex==null)
                     {
-                        throw new Exception("Exchange does not exist");
+                        //throw new Exception("Exchange does not exist");
+                        System.out.println(actionMessage+": "+"Parent exchange does not exist");
+                        
                     }
                     else{
                         ex2 = new Exchange(b);
@@ -118,7 +120,8 @@ public class RoutingMapTree
                     ex = getExchange(b);
                     if (ex==null)
                     {
-                        throw new Exception("Exchange does not exist");
+                        //throw new Exception("Exchange does not exist");
+                        System.out.println(actionMessage+": "+"Exchange does not exist");
                     }
                     //check leaf
                     else
@@ -137,7 +140,7 @@ public class RoutingMapTree
                     a = sc.nextInt();
                     if(root.mobps.getMobilePhone(a)==null)
                     {
-                        throw new Exception("Mobile Phone does not exist");
+                        //throw new Exception("Mobile Phone does not exist");
                     }
                     else
                     {
@@ -148,20 +151,23 @@ public class RoutingMapTree
                     a = sc.nextInt();
                     b = sc.nextInt();
                     ex = getExchange(a);
-                    ex2 = ex.child(b);
-
                     if(ex == null)
                     {
-                        throw new Exception("Exchange does not exist");
+                       // throw new Exception("Exchange does not exist");
+                        System.out.println(actionMessage+": "+"Parent exchange does not exist");
                     }
-                    else if(ex2 == null)
-                    {
-                        throw new Exception(b+"th Child does not exist");
+                    else{
+                        ex2 = ex.child(b);
+                        if(ex2 == null)
+                        {
+                           // throw new Exception(b+"th Child does not exist");
+                            System.out.println(actionMessage+": "+"Child does not exist at index = "+b);
+                        }
+                        else
+                        {
+                            System.out.println(actionMessage+": "+ex2.uid);
+                        }
                     }
-                    else
-                    {
-                        System.out.println(actionMessage+": "+ex2.uid);
-                    }               
                     break;
                 case "queryMobilePhoneSet":
                     a = sc.nextInt();
@@ -170,7 +176,7 @@ public class RoutingMapTree
                     ///System.out.println("boo " + ex.uid);
                     if (ex == null)
                     {
-                        throw new Exception("Exchange does not exist");
+                       // throw new Exception("Exchange does not exist");
                     }
                     else{
                         System.out.println(actionMessage+": "+ex.mobps.displaymob());
@@ -180,8 +186,8 @@ public class RoutingMapTree
                     System.out.println("Wrong Action Statement");
                     break;
             }
-        } catch (Exception e) {
-            System.out.println("ERROR : "+ e);
-        }      	
+//        } catch (Exception e) {
+//            System.out.println("ERROR : "+ e);
+//        }      	
     }
 }

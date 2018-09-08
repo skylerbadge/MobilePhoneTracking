@@ -33,6 +33,9 @@ public class ExchangeList
     
     public Exchange ithChild(int index)
     {
+        ///System.out.println(index+" lol "+ell.ithNode(index));
+        if (ell.ithNode(index)==null)
+            return null;
         return (Exchange)ell.ithNode(index).data;
     }
 }
