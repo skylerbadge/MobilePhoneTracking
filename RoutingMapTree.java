@@ -125,6 +125,8 @@ public class RoutingMapTree
                     {
                         throw new Exception("Exchange does not exist");
                     }
+                    else if(ex.numChildren()>0)
+                        throw new Exception("Can only add mobile to a base exchange");
                     //check leaf
                     else
                     {
