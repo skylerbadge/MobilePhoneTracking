@@ -1,4 +1,4 @@
-// for moodle with String return
+// original RoutingMapTree with SOPln
 
 import java.util.Scanner;
 
@@ -91,12 +91,11 @@ public class RoutingMapTree
         }
         return null;
     }
-    public String performAction(String actionMessage) {
+    public void performAction(String actionMessage) {
         Scanner sc = new Scanner(actionMessage);
         String action = sc.next();
         int a,b;
         Exchange ex,ex2;
-        String str = "";
         try {
             switch(action)
             {
@@ -164,7 +163,7 @@ public class RoutingMapTree
                         }
                         else
                         {
-                            str = actionMessage+": "+Integer.toString(ex2.uid);
+                            System.out.println(actionMessage+": "+ex2.uid);
                         }
                     }
                     break;
@@ -176,7 +175,7 @@ public class RoutingMapTree
                        throw new Exception("Exchange does not exist");
                     }
                     else{
-                        str = actionMessage+": "+ex.mobps.displaymob();
+                        System.out.println(actionMessage+": "+ex.mobps.displaymob());
                     }
                     break;
                 default:
@@ -185,7 +184,6 @@ public class RoutingMapTree
             }
         } catch (Exception e) {
             System.out.println(actionMessage+": "+e.getMessage());
-        }
-        return str;
+        }      	
     }
 }
