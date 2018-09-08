@@ -10,13 +10,12 @@ public class ExchangeList
     {
         return ell.isEmpty();
     }
-    public boolean isMember(Exchange ex) // check
+    public boolean isMember(Exchange ex)
     {
         return ell.isMember(ex);
     }
     public void Insert(Exchange ex)
     {
-        ///System.out.println(ex.uid+"call");
         ell.addAtTail(ex);
     }
     public void Delete(Exchange ex) throws Exception
@@ -33,7 +32,6 @@ public class ExchangeList
     
     public Exchange ithChild(int index)
     {
-        ///System.out.println(index+" lol "+ell.ithNode(index));
         if (ell.ithNode(index)==null)
             return null;
         return (Exchange)ell.ithNode(index).data;

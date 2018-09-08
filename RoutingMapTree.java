@@ -27,35 +27,31 @@ public class RoutingMapTree
         }
         return false;
     }
-    public void switchOn(MobilePhone a, Exchange b)throws Exception//add exception check leaf
+    public void switchOn(MobilePhone a, Exchange b)throws Exception
     {
-        ///System.out.println("adding to "+b.isroot()+b.uid+a.status+a.id);
-        ///System.out.println(a.status);
         if (!a.status())
         {
             
             b.addMobile(a);
             a.base=b;
-            ///System.out.println("added to "+b.uid);
             while(!b.isroot())
             {
                 b=b.parent();
                 b.addMobile(a);
-                ///System.out.println("added to "+b.uid);
             }
             a.switchOn();
-            ///System.out.println(a.status);
         }
         else
             throw new Exception("Mobile is already on");
     }
-    public void switchOff(MobilePhone a)throws Exception//add exception check leaf
+    public void switchOff(MobilePhone a)throws Exception
     {
         if (a.status())
         {
             a.switchOff();
-            //Exchange b = a.base;
-            //delete
+//          delete mobile phone
+//          Exchange b = a.base;
+//          
 //            b.delMobile(a);
 //            while(!b.isroot())
 //            {
@@ -66,7 +62,7 @@ public class RoutingMapTree
         else
             throw new Exception("Mobile is already off");            
     }
-    public Exchange getExchange(int id)//add exception
+    public Exchange getExchange(int id)
     {
         Exchange ptr = root;
         if(root.uid==id)
@@ -81,7 +77,7 @@ public class RoutingMapTree
         }
         return null;
     }
-    public Exchange print()//debug
+    public Exchange print()//for debugging
     {
         Exchange ptr = root;
         System.out.println(ptr.uid);
@@ -98,7 +94,6 @@ public class RoutingMapTree
         String action = sc.next();
         int a,b;
         Exchange ex,ex2;
-        //System.out.println(actionMessage);
         try {
             switch(action)
             {
@@ -106,7 +101,6 @@ public class RoutingMapTree
                     a = sc.nextInt();
                     b = sc.nextInt();
                     ex = getExchange(a);
-                    //System.out.println(ex.isroot());
                     if (ex==null)
                     {
                         throw new Exception("Parent exchange does not exist");
@@ -125,19 +119,16 @@ public class RoutingMapTree
                     {
                         throw new Exception("Exchange does not exist");
                     }
-                    else if(ex.numChildren()>0)
-                        throw new Exception("Can only add mobile to a base exchange");
-                    //check leaf
                     else
                     {
                         MobilePhone mob = root.mobps.getMobilePhone(a);
-                          ///System.out.println(mob.id);   
                         if (mob==null)
                         {
+                            if(ex.numChildren()>0)
+                                throw new Exception("Can only add mobile to a base exchange");
                             switchOn(new MobilePhone(a),ex);
                         }else{
-                           ///System.out.println("bobo");
-                            if(mob.base.uid!=ex.uid)
+                            if(!ex.mobps.isMember(mob))
                                throw new Exception("Mobile registered with another exchange");
                            switchOn(mob,ex);
                         }
@@ -177,8 +168,6 @@ public class RoutingMapTree
                 case "queryMobilePhoneSet":
                     a = sc.nextInt();
                     ex = getExchange(a);
-
-                    ///System.out.println("boo " + ex.uid);
                     if (ex == null)
                     {
                        throw new Exception("Exchange does not exist");

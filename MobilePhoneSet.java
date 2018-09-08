@@ -1,4 +1,4 @@
-//Add exceptions for insert registered and delete not registered
+
 public class MobilePhoneSet
 {
     Myset mobset;
@@ -51,14 +51,10 @@ public class MobilePhoneSet
     {
         LinkedList mll = mobset.setobj;
         Node ptr = mll.head;
-        ///System.out.println(ptr);
         if(ptr==null)
             return null;
-        ///System.out.println(ptr+" "+((MobilePhone)ptr.data).id);
         while(ptr!=null)
         {
-            ///System.out.println(((MobilePhone)ptr.data).id);
-            ///System.out.println(ptr+" "+((MobilePhone)ptr.data).id);
             if(((MobilePhone)ptr.data).id==uid)
                 return ((MobilePhone)ptr.data);
             ptr=ptr.next;
@@ -67,7 +63,6 @@ public class MobilePhoneSet
     }
     public String displaymob()
     {
-        ///System.out.println("hey");
         LinkedList ll = mobset.setobj;
         Node ptr = ll.head;
         String str="";

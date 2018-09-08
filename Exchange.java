@@ -33,7 +33,7 @@ public class Exchange
     {
         return root;
     }
-    public RoutingMapTree subtree(int i)//add exceptions
+    public RoutingMapTree subtree(int i)
     {
         if(i>=0 && i < numChildren())
         {
@@ -49,8 +49,7 @@ public class Exchange
     
     public void addMobile(MobilePhone mp)
     {
-            mobps.Store(mp);
-        ///System.out.println(this.uid);
+        mobps.Store(mp);
         return;
     }
     public void delMobile(MobilePhone mp)
@@ -60,7 +59,6 @@ public class Exchange
     }
     public void addChild(Exchange a)
     {
-        ///System.out.println(a.uid);
         a.parent=this;
         childll.Insert(a);
         return;

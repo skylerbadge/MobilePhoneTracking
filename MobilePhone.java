@@ -1,5 +1,3 @@
-// fill Exchange base, status exceptions, update constructor for status
-
 public class MobilePhone
 {
 	int id;

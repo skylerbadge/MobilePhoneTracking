@@ -167,7 +167,7 @@ class LinkedList
             return index;       
     }
     
-    public Node ithNode(int index)//starts from index 0...add exception later
+    public Node ithNode(int index)//starts from index 0
     {
         if (index >= numNodes)
             return null;
