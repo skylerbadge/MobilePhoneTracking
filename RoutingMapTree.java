@@ -49,22 +49,22 @@ public class RoutingMapTree
         else
             throw new Exception("Mobile is already on");
     }
-    public void switchOff(MobilePhone a)//add exception check leaf
+    public void switchOff(MobilePhone a)throws Exception//add exception check leaf
     {
         if (a.status())
         {
             a.switchOff();
-            Exchange b = a.base;
-            ///System.out.println("boho"+b.uid);
-            b.delMobile(a);
-            ///System.out.println("added to "+b.uid);
-            while(!b.isroot())
-            {
-                b=b.parent();
-                b.delMobile(a);
-                ///System.out.println("added to "+b.uid);
-            }
+            //Exchange b = a.base;
+            //delete
+//            b.delMobile(a);
+//            while(!b.isroot())
+//            {
+//                b=b.parent();
+//                b.delMobile(a);
+//            }
         }
+        else
+            throw new Exception("Mobile is already off");            
     }
     public Exchange getExchange(int id)//add exception
     {
@@ -157,8 +157,12 @@ public class RoutingMapTree
                     }
                     else
                     {
-                        switchOff(root.mobps.getMobilePhone(a));
-                    }               
+                        try{ 
+                            switchOff(root.mobps.getMobilePhone(a));
+                        }catch(Exception e){System.out.println(e.getMessage());}
+                        }
+                    
+                                   
                     break;
                 case "queryNthChild":
                     a = sc.nextInt();

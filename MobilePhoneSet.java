@@ -72,8 +72,9 @@ public class MobilePhoneSet
         Node ptr = ll.head;
         String str="";
         while(ptr!=null)
-        {
-            str=Integer.toString(((MobilePhone)ptr.data).id)+", "+str;
+        {   
+            if(((MobilePhone)ptr.data).status)
+                str=Integer.toString(((MobilePhone)ptr.data).id)+", "+str;
             ptr = ptr.next;
         }
         if (str.equals(""))
