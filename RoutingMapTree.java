@@ -130,14 +130,17 @@ public class RoutingMapTree
                     //check leaf
                     else
                     {
-                        MobilePhone mob = ex.mobps.getMobilePhone(a);
+                        MobilePhone mob = root.mobps.getMobilePhone(a);
                         try {
-                          //System.out.println(mob.id);   
+                          ///System.out.println(mob.id);   
                         
                         if (mob==null)// will add automatically so redundant
                         {
                             switchOn(new MobilePhone(a),ex);
                         }else{
+                           ///System.out.println("bobo");
+                           if(mob.base.uid!=ex.uid)
+                               throw new Exception("Mobile registered with another exchange");
                            switchOn(mob,ex);
                         }
                         } catch (Exception e) {
@@ -149,6 +152,7 @@ public class RoutingMapTree
                     a = sc.nextInt();
                     if(root.mobps.getMobilePhone(a)==null)
                     {
+                        System.out.println(actionMessage+": "+"Mobile does not exist");
                         //throw new Exception("Mobile Phone does not exist");
                     }
                     else
@@ -185,7 +189,7 @@ public class RoutingMapTree
                     ///System.out.println("boo " + ex.uid);
                     if (ex == null)
                     {
-                       // throw new Exception("Exchange does not exist");
+                       System.out.println(actionMessage+": Exchange does not exist");
                     }
                     else{
                         System.out.println(actionMessage+": "+ex.mobps.displaymob());
