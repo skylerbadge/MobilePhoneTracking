@@ -94,91 +94,94 @@ public class RoutingMapTree
         String action = sc.next();
         int a,b;
         Exchange ex,ex2;
-       // System.out.println(actionMessage);
-        //try {
-        switch(action)
-        {
-            case "addExchange":
-                a = sc.nextInt();
-                b = sc.nextInt();
-                ex = getExchange(a);
-                //System.out.println(ex.isroot());
-                /*if (ex==null)
-                {
-                    throw new Exception("1");
-                }
-                else{*/
-                    ex2 = new Exchange(b);
-                    ex.addChild(ex2);
-                //}
-                break;
-            case "switchOnMobile":
-                a = sc.nextInt();
-                b = sc.nextInt();
-                ex = getExchange(b);
-                if (ex==null)
-                {
-                    //throw new Exception("2");
-                }
-                //check leaf
-                else
-                {
-                    MobilePhone mob = ex.mobps.getMobilePhone(a);
-                    
-                    if (mob==null)// will add automatically so redundant
+        //System.out.println(actionMessage);
+        try {
+            switch(action)
+            {
+                case "addExchange":
+                    a = sc.nextInt();
+                    b = sc.nextInt();
+                    ex = getExchange(a);
+                    //System.out.println(ex.isroot());
+                    if (ex==null)
                     {
-                        switchOn(new MobilePhone(a),ex);
-                    }else{
-                       switchOn(mob,ex);
+                        throw new Exception("Exchange does not exist");
                     }
-                }
-                break;
-            case  "switchOffMobile":
-                a = sc.nextInt();
-                if(root.mobps.getMobilePhone(a)==null)
-                {
-                    //throw new Exception("3");
-                }
-                else
-                {
-                    switchOff(root.mobps.getMobilePhone(a));
-                }               
-                break;
-            case "queryNthChild":
-                a = sc.nextInt();
-                b = sc.nextInt();
-                ex = getExchange(a);
-                ex2 = ex.child(b);
-                
-                if(ex == null|| ex2 == null)
-                {
-                    //throw new Exception("4");
-                }
-                else
-                {
-                    System.out.println(actionMessage+": "+ex2.uid);
-                }               
-                break;
-            case "queryMobilePhoneSet":
-                a = sc.nextInt();
-                ex = getExchange(a);
-                
-                ///System.out.println("boo " + ex.uid);
-                if (ex == null)
-                {
-                    //throw new Exception("5");
-                }
-                else{
-                    System.out.println(actionMessage+": "+ex.mobps.displaymob());
-                }
-                break;
-            default:
-                System.out.println("Wrong Action Statement");
-                break;
-        }
-        /*} catch (Exception e) {
-            System.out.println("lol error"+ e);
-        }
-        */	
+                    else{
+                        ex2 = new Exchange(b);
+                        ex.addChild(ex2);
+                    }
+                    break;
+                case "switchOnMobile":
+                    a = sc.nextInt();
+                    b = sc.nextInt();
+                    ex = getExchange(b);
+                    if (ex==null)
+                    {
+                        throw new Exception("Exchange does not exist");
+                    }
+                    //check leaf
+                    else
+                    {
+                        MobilePhone mob = ex.mobps.getMobilePhone(a);
+
+                        if (mob==null)// will add automatically so redundant
+                        {
+                            switchOn(new MobilePhone(a),ex);
+                        }else{
+                           switchOn(mob,ex);
+                        }
+                    }
+                    break;
+                case  "switchOffMobile":
+                    a = sc.nextInt();
+                    if(root.mobps.getMobilePhone(a)==null)
+                    {
+                        throw new Exception("Mobile Phone does not exist");
+                    }
+                    else
+                    {
+                        switchOff(root.mobps.getMobilePhone(a));
+                    }               
+                    break;
+                case "queryNthChild":
+                    a = sc.nextInt();
+                    b = sc.nextInt();
+                    ex = getExchange(a);
+                    ex2 = ex.child(b);
+
+                    if(ex == null)
+                    {
+                        throw new Exception("Exchange does not exist");
+                    }
+                    else if(ex2 == null)
+                    {
+                        throw new Exception(b+"th Child does not exist");
+                    }
+                    else
+                    {
+                        System.out.println(actionMessage+": "+ex2.uid);
+                    }               
+                    break;
+                case "queryMobilePhoneSet":
+                    a = sc.nextInt();
+                    ex = getExchange(a);
+
+                    ///System.out.println("boo " + ex.uid);
+                    if (ex == null)
+                    {
+                        throw new Exception("Exchange does not exist");
+                    }
+                    else{
+                        System.out.println(actionMessage+": "+ex.mobps.displaymob());
+                    }
+                    break;
+                default:
+                    System.out.println("Wrong Action Statement");
+                    break;
+            }
+        } catch (Exception e) {
+            System.out.println("ERROR : "+ e);
+        }      	
     }
 }
