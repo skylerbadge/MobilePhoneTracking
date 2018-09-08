@@ -156,7 +156,7 @@ public class RoutingMapTree
                 }
                 else
                 {
-                    System.out.println(ex2.uid);
+                    System.out.println(actionMessage+": "+ex2.uid);
                 }               
                 break;
             case "queryMobilePhoneSet":
@@ -169,7 +169,7 @@ public class RoutingMapTree
                     //throw new Exception("5");
                 }
                 else{
-                    System.out.println(ex.mobps.displaymob());
+                    System.out.println(actionMessage+": "+ex.mobps.displaymob());
                 }
                 break;
             default:
