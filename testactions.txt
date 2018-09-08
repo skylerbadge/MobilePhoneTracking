@@ -11,7 +11,7 @@ addExchange 2 8
 addExchange 3 9
 queryNthChild 2 0
 queryNthChild 3 0
-switchOnMobile 989 19
+switchOnMobile 989 4
 switchOnMobile 876 4
 queryMobilePhoneSet 4
 queryMobilePhoneSet 1

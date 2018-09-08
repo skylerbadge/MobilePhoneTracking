@@ -27,9 +27,10 @@ public class RoutingMapTree
         }
         return false;
     }
-    public void switchOn(MobilePhone a, Exchange b)//add exception check leaf
+    public void switchOn(MobilePhone a, Exchange b)throws Exception//add exception check leaf
     {
         ///System.out.println("adding to "+b.isroot()+b.uid+a.status+a.id);
+        ///System.out.println(a.status);
         if (!a.status())
         {
             
@@ -43,7 +44,10 @@ public class RoutingMapTree
                 ///System.out.println("added to "+b.uid);
             }
             a.switchOn();
+            ///System.out.println(a.status);
         }
+        else
+            throw new Exception("Mobile is already on");
     }
     public void switchOff(MobilePhone a)//add exception check leaf
     {
@@ -127,12 +131,17 @@ public class RoutingMapTree
                     else
                     {
                         MobilePhone mob = ex.mobps.getMobilePhone(a);
-
+                        try {
+                          //System.out.println(mob.id);   
+                        
                         if (mob==null)// will add automatically so redundant
                         {
                             switchOn(new MobilePhone(a),ex);
                         }else{
                            switchOn(mob,ex);
+                        }
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
                         }
                     }
                     break;

@@ -51,10 +51,14 @@ public class MobilePhoneSet
     {
         LinkedList mll = mobset.setobj;
         Node ptr = mll.head;
+        ///System.out.println(ptr);
         if(ptr==null)
             return null;
-        while(ptr.next!=null)
+        ///System.out.println(ptr+" "+((MobilePhone)ptr.data).id);
+        while(ptr!=null)
         {
+            ///System.out.println(((MobilePhone)ptr.data).id);
+            ///System.out.println(ptr+" "+((MobilePhone)ptr.data).id);
             if(((MobilePhone)ptr.data).id==uid)
                 return ((MobilePhone)ptr.data);
             ptr=ptr.next;
@@ -72,6 +76,8 @@ public class MobilePhoneSet
             str=Integer.toString(((MobilePhone)ptr.data).id)+", "+str;
             ptr = ptr.next;
         }
+        if (str.equals(""))
+            return str;
         return str.substring(0,str.length()-2);
     }
 }
