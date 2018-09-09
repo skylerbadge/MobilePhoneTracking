@@ -17,9 +17,10 @@ queryMobilePhoneSet 4
 queryMobilePhoneSet 1
 switchOnMobile 656 5
 switchOnMobile 54 5
-switchOnMobile 54 9
 queryMobilePhoneSet 1
-switchOffMobile 656
+queryMobilePhoneSet 9
+switchOnMobile 656 9
+queryMobilePhoneSet 9
 queryMobilePhoneSet 1
 switchOnMobile 213 6
 switchOnMobile 568 7

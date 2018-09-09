@@ -64,6 +64,16 @@ public class RoutingMapTree
         else
             throw new Exception("Mobile is already off");            
     }
+    public void deleteMob(MobilePhone a)
+    {
+        Exchange b = a.base;
+        b.delMobile(a);
+        while(!b.isroot())
+        {
+            b=b.parent();
+            b.delMobile(a);
+        }
+    }
     public Exchange getExchange(int id)
     {
         Exchange ptr = root;
@@ -132,8 +142,14 @@ public class RoutingMapTree
                             switchOn(new MobilePhone(a),ex);
                         }else{
                             if(!ex.mobps.isMember(mob))
-                               throw new Exception("Mobile registered with another exchange");
-                           switchOn(mob,ex);
+                               if(mob.status())
+                               {    
+                                   throw new Exception("Mobile registered with another exchange");
+                               }
+                               else{
+                                   deleteMob(mob);
+                                   switchOn(mob,ex);
+                               }
                         }
                     }
                     break;
