@@ -101,6 +101,36 @@ public class RoutingMapTree
         }
         return null;
     }
+    
+//    ASSIGNMENT 2 
+    
+    public Exchange findPhone(MobilePhone m) throws Exception
+    {
+        if(!root.mobps.isMember(m))
+        {
+            throw new Exception("Mobile Phone not registered");
+        }
+        if(!root.mobps.getMobilePhone(m.id).status())
+        {
+            throw new Exception("Mobile Phone is switched off");
+        }
+        return root.mobps.getMobilePhone(m.id).base;
+    }
+    
+    public Exchange lowestRouter(Exchange a, Exchange b) throws Exception
+    {
+        if(a.equals(b))
+            return a;
+        Exchange ptr = a.parent;
+        while(ptr != null)
+        {
+            if(ptr.childll.isMember(a)&&ptr.childll.isMember(b))
+                return ptr;
+            ptr=ptr.parent;
+        }
+        throw new Exception("Exchange does not exist");  
+    }
+    
     public String performAction(String actionMessage) {
         Scanner sc = new Scanner(actionMessage);
         String action = sc.next();

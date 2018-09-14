@@ -12,6 +12,7 @@ public class Exchange
         root=false;
         mobps = new MobilePhoneSet();
         childll=new ExchangeList();
+        parent=null;
     }
     public void makeRoot()
     {
