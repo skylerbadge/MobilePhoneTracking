@@ -107,13 +107,9 @@ public class RoutingMapTree
     public Exchange findPhone(MobilePhone m) throws Exception
     {
         if(!root.mobps.isMember(m))
-        {
             throw new Exception("Mobile Phone not registered");
-        }
-        if(!root.mobps.getMobilePhone(m.id).status())
-        {
+        else if(!root.mobps.getMobilePhone(m.id).status())
             throw new Exception("Mobile Phone is switched off");
-        }
         return root.mobps.getMobilePhone(m.id).base;
     }
     
@@ -135,7 +131,7 @@ public class RoutingMapTree
     {
         if(!root.mobps.isMember(a)||!root.mobps.isMember(b))
             throw new Exception("Mobile Phone is not registered");
-        if(!a.status||!b.status)
+        else if(!a.status||!b.status)
             throw new Exception("Mobile Phone is switched off");
         ExchangeList el1 = new ExchangeList();
         Exchange lr = lowestRouter(a.base,b.base);
@@ -156,11 +152,30 @@ public class RoutingMapTree
         return el1.concat(el2);
     }
     
+    public void movePhone(MobilePhone a, Exchange b) throws Exception
+    {
+        if (!root.mobps.isMember(a))
+            throw new Exception("Mobile Phone not registered");
+        else if (!containsNode(b))
+            throw new Exception("Exchange does not exist");
+        else if (!a.status)
+            throw new Exception("Mobile Phone is switched off"); 
+        deleteMob(a);
+        
+        b.addMobile(a);
+        a.base=b;
+        while(!b.isroot())
+        {
+            b=b.parent();
+            b.addMobile(a);
+        }
+    }
     public String performAction(String actionMessage) {
         Scanner sc = new Scanner(actionMessage);
         String action = sc.next();
         int a,b;
-        Exchange ex,ex2;
+        Exchange ex,ex2,ex3;
+        MobilePhone m,m1;
         String str = "";
         try {
             switch(action)
@@ -250,6 +265,45 @@ public class RoutingMapTree
                         str = actionMessage+": "+ex.mobps.displaymob();
                     }
                     break;
+                case "findPhone":
+                    a = sc.nextInt();
+                    m = root.mobps.getMobilePhone(a);
+                    if(m==null)
+                    {
+                        throw new Exception("Mobile does not exist");
+                    }
+                    ex = findPhone(m);
+                    str = "queryF"+actionMessage.substring(1)+": "+Integer.toString(ex.uid);
+                    break;
+                case "lowestRouter":
+                    a = sc.nextInt();
+                    b = sc.nextInt();
+                    ex = getExchange(a);
+                    ex2 = getExchange(b);
+                    if (ex == null||ex2==null)
+                    {
+                       throw new Exception("Exchange does not exist");
+                    }
+                    ex3 = lowestRouter(ex, ex2);
+                    str = "queryL"+actionMessage.substring(1)+": "+Integer.toString(ex3.uid);
+                    break;                    
+                case "findCallPath":
+                    //
+                case "movePhone":
+                    a = sc.nextInt();
+                    b = sc.nextInt();
+                    m = root.mobps.getMobilePhone(a);
+                    if(m==null)
+                    {
+                        throw new Exception("Mobile does not exist");
+                    }
+                    ex = getExchange(b);
+                    if (ex == null)
+                    {
+                       throw new Exception("Exchange does not exist");
+                    }
+                    movePhone(m, ex);
+                    break;                    
                 default:
                     System.out.println("Wrong Action Statement");
                     break;
