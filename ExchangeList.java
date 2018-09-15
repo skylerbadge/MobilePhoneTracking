@@ -36,4 +36,26 @@ public class ExchangeList
             return null;
         return (Exchange)ell.ithNode(index).data;
     }
+    public void InsertRev(Exchange ex)
+    {
+        ell.addAtHead(ex);
+    }
+    public ExchangeList concat(ExchangeList newel)
+    {
+        ExchangeList join = new ExchangeList();
+        Node ptr = new Node();
+        ptr = ell.head;
+        while(ptr!=null)
+        {
+            join.Insert(((Exchange)ptr.data)); 
+            ptr=ptr.next;
+        }
+        ptr = newel.ell.head;
+        while(ptr!=null)
+        {
+            join.Insert(((Exchange)ptr.data)); 
+            ptr=ptr.next;
+        }
+        return join;
+    }
 }

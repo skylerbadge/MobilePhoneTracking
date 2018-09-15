@@ -131,6 +131,31 @@ public class RoutingMapTree
         throw new Exception("Exchange does not exist");  
     }
     
+    public ExchangeList routeCall(MobilePhone a, MobilePhone b) throws Exception
+    {
+        if(!root.mobps.isMember(a)||!root.mobps.isMember(b))
+            throw new Exception("Mobile Phone is not registered");
+        if(!a.status||!b.status)
+            throw new Exception("Mobile Phone is switched off");
+        ExchangeList el1 = new ExchangeList();
+        Exchange lr = lowestRouter(a.base,b.base);
+        Exchange ptr = a.base;
+        while(ptr!=lr)
+        {
+            el1.Insert(ptr);
+            ptr=ptr.parent;
+        }
+        el1.Insert(lr);
+        ExchangeList el2 = new ExchangeList();
+        ptr = b.base;
+        while(ptr!=lr)
+        {
+            el2.InsertRev(ptr);
+            ptr = ptr.parent;
+        }
+        return el1.concat(el2);
+    }
+    
     public String performAction(String actionMessage) {
         Scanner sc = new Scanner(actionMessage);
         String action = sc.next();
