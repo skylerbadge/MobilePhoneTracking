@@ -161,7 +161,6 @@ public class RoutingMapTree
         else if (!a.status)
             throw new Exception("Mobile Phone is switched off"); 
         deleteMob(a);
-        
         b.addMobile(a);
         a.base=b;
         while(!b.isroot())
@@ -170,7 +169,7 @@ public class RoutingMapTree
             b.addMobile(a);
         }
     }
-    public String performAction(String actionMessage) {
+    public void performAction(String actionMessage) {
         Scanner sc = new Scanner(actionMessage);
         String action = sc.next();
         int a,b;
@@ -288,7 +287,31 @@ public class RoutingMapTree
                     str = "queryL"+actionMessage.substring(1)+": "+Integer.toString(ex3.uid);
                     break;                    
                 case "findCallPath":
-                    //
+                    a = sc.nextInt();
+                    b = sc.nextInt();
+                    m = root.mobps.getMobilePhone(a);
+                    m1 = root.mobps.getMobilePhone(b);
+                    if(m==null||m1==null)
+                    {
+                        throw new Exception("Mobile does not exist");
+                    }
+                    ExchangeList el = routeCall(m,m1);
+                    Node ptr = new Node();
+                    ptr = el.ell.head;
+                    String list = "";
+                    if(ptr == null)
+                        throw new Exception("Cannot route call");
+                    else
+                    {
+                        while(ptr!=null)
+                        {
+                            list = list +", "+ Integer.toString(((Exchange)ptr.data).uid);
+                            ptr = ptr.next;
+                        }
+                        list = list.substring(2);
+                    }
+                    str = "queryF"+actionMessage.substring(1)+": "+list;
+                    break;
                 case "movePhone":
                     a = sc.nextInt();
                     b = sc.nextInt();
@@ -311,6 +334,7 @@ public class RoutingMapTree
         } catch (Exception e) {
             System.out.println(actionMessage+": "+e.getMessage());
         }
-        return str;
+        if(str!="")
+            System.out.println(str);
     }
 }
