@@ -135,8 +135,10 @@ public class RoutingMapTree
     {
         if(!root.mobps.isMember(a)||!root.mobps.isMember(b))
             throw new Exception("Mobile Phone is not registered");
-        else if(!a.status||!b.status)
-            throw new Exception("Mobile Phone is switched off");
+        else if(!a.status)
+            throw new Exception("Error - Mobile phone with identifier "+a.id+" is currently switched off");
+        else if(!b.status)
+            throw new Exception("Error - Mobile phone with identifier "+b.id+" is currently switched off");
         ExchangeList el1 = new ExchangeList();
         Exchange lr = lowestRouter(a.base,b.base);
         Exchange ptr = a.base;
@@ -273,7 +275,7 @@ public class RoutingMapTree
                     m = root.mobps.getMobilePhone(a);
                     if(m==null)
                     {
-                        throw new Exception("Mobile does not exist");
+                        throw new Exception("Error - No mobile phone with identifier "+a+" found in the network");
                     }
                     ex = findPhone(m);
                     str = "queryF"+actionMessage.substring(1)+": "+Integer.toString(ex.uid);
