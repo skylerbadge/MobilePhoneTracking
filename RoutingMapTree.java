@@ -117,12 +117,16 @@ public class RoutingMapTree
     {
         if(a.equals(b))
             return a;
-        Exchange ptr = a.parent;
-        while(ptr != null)
+        Exchange prta = a.parent;
+        Exchange prtb = b.parent;
+        // childll not common
+        while(prta!=null && prtb!=null)
         {
-            if(ptr.childll.isMember(a)&&ptr.childll.isMember(b))
-                return ptr;
-            ptr=ptr.parent;
+            if(prta==prtb)
+                return prta;
+            //System.out.println(ptr);
+            prta=prta.parent;
+            prtb=prtb.parent;
         }
         throw new Exception("Exchange does not exist");  
     }
