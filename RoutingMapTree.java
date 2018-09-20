@@ -44,7 +44,7 @@ public class RoutingMapTree
             a.switchOn();
         }
         else
-            throw new Exception("Mobile is already on");
+            throw new Exception("Error - Mobile phone with identifier "+a.id+" is already switched on");
     }
     public void switchOff(MobilePhone a)throws Exception
     {
@@ -62,7 +62,7 @@ public class RoutingMapTree
 //            }
         }
         else
-            throw new Exception("Mobile is already off");            
+            throw new Exception("Error - Mobile phone with identifier "+a.id+" is already switched off");            
     }
     public void deleteMob(MobilePhone a)
     {
@@ -107,9 +107,9 @@ public class RoutingMapTree
     public Exchange findPhone(MobilePhone m) throws Exception
     {
         if(!root.mobps.isMember(m))
-            throw new Exception("Mobile Phone not registered");
+            throw new Exception("Error - No mobile phone with identifier "+m.id+" found in the network");
         else if(!root.mobps.getMobilePhone(m.id).status())
-            throw new Exception("Mobile Phone is switched off");
+            throw new Exception("Error - Mobile phone with identifier "+m.id+" is currently switched off");
         return root.mobps.getMobilePhone(m.id).base;
     }
     
@@ -128,13 +128,15 @@ public class RoutingMapTree
             prta=prta.parent;
             prtb=prtb.parent;
         }
-        throw new Exception("Exchange does not exist");  
+        throw new Exception("Error - Exchange does not exist in the network");  
     }
     
     public ExchangeList routeCall(MobilePhone a, MobilePhone b) throws Exception
     {
-        if(!root.mobps.isMember(a)||!root.mobps.isMember(b))
-            throw new Exception("Mobile Phone is not registered");
+        if(!root.mobps.isMember(a))
+            throw new Exception("Error - No mobile phone with identifier "+a.id+" found in the network");
+        if(!root.mobps.isMember(b))
+            throw new Exception("Error - No mobile phone with identifier "+b.id+" found in the network");
         else if(!a.status)
             throw new Exception("Error - Mobile phone with identifier "+a.id+" is currently switched off");
         else if(!b.status)
@@ -161,11 +163,13 @@ public class RoutingMapTree
     public void movePhone(MobilePhone a, Exchange b) throws Exception
     {
         if (!root.mobps.isMember(a))
-            throw new Exception("Mobile Phone not registered");
+            throw new Exception("Error - No mobile phone with identifier "+a.id+" found in the network");
         else if (!containsNode(b))
-            throw new Exception("Exchange does not exist");
+            throw new Exception("Error - No exchange with identifier "+b.uid+" found in the network");
         else if (!a.status)
-            throw new Exception("Mobile Phone is switched off"); 
+            throw new Exception("Error - Mobile phone with identifier "+a.id+" is currently switched off"); 
+        else if (a.base.equals(b))
+            throw new Exception("Error - Mobile phone already registered with Exchange with identifier "+b.uid);
         deleteMob(a);
         b.addMobile(a);
         a.base=b;
@@ -191,7 +195,7 @@ public class RoutingMapTree
                     ex = getExchange(a);
                     if (ex==null)
                     {
-                        throw new Exception("Parent exchange does not exist");
+                        throw new Exception("Error - No exchange with identifier "+a+" found in the network");
                         
                     }
                     else{
@@ -205,26 +209,29 @@ public class RoutingMapTree
                     ex = getExchange(b);
                     if (ex==null)
                     {
-                        throw new Exception("Exchange does not exist");
+                        throw new Exception("Error - No exchange with identifier "+b+" found in the network");
                     }
-                    else
+                    MobilePhone mob = root.mobps.getMobilePhone(a);
+                    if (mob==null)
                     {
-                        MobilePhone mob = root.mobps.getMobilePhone(a);
-                        if (mob==null)
+                        if(ex.numChildren()>0)
+                            throw new Exception("Error - Can only add mobile to a base exchange");
+                        switchOn(new MobilePhone(a),ex);
+                    }else{
+                        if(!ex.mobps.isMember(mob))
                         {
-                            if(ex.numChildren()>0)
-                                throw new Exception("Can only add mobile to a base exchange");
-                            switchOn(new MobilePhone(a),ex);
-                        }else{
-                            if(!ex.mobps.isMember(mob))
-                               if(mob.status())
-                               {    
-                                   throw new Exception("Mobile registered with another exchange");
-                               }
-                               else{
-                                   deleteMob(mob);
-                                   switchOn(mob,ex);
-                               }
+                           if(mob.status())
+                           {    
+                               throw new Exception("Error - Mobile registered with another exchange");
+                           }
+                           else{
+                               deleteMob(mob);
+                               switchOn(mob,ex);
+                           }
+                        }
+                        else
+                        {
+                            switchOn(mob, ex);
                         }
                     }
                     break;
@@ -232,7 +239,7 @@ public class RoutingMapTree
                     a = sc.nextInt();
                     if(root.mobps.getMobilePhone(a)==null)
                     {
-                        throw new Exception("Mobile does not exist");
+                        throw new Exception("Error - No mobile phone with identifier "+a+" found in the network");
                     }
                     else
                     {
@@ -245,13 +252,13 @@ public class RoutingMapTree
                     ex = getExchange(a);
                     if(ex == null)
                     {
-                        throw new Exception("Parent exchange does not exist");
+                        throw new Exception("Error - No exchange with identifier "+a+" found in the network");
                     }
                     else{
                         ex2 = ex.child(b);
                         if(ex2 == null)
                         {
-                            throw new Exception("Child does not exist at index = "+b);
+                            throw new Exception("Error - Child does not exist at index = "+b);
                         }
                         else
                         {
@@ -264,7 +271,7 @@ public class RoutingMapTree
                     ex = getExchange(a);
                     if (ex == null)
                     {
-                       throw new Exception("Exchange does not exist");
+                       throw new Exception("Error - No exchange with identifier "+a+" found in the network");
                     }
                     else{
                         str = actionMessage+": "+ex.mobps.displaymob();
@@ -285,9 +292,13 @@ public class RoutingMapTree
                     b = sc.nextInt();
                     ex = getExchange(a);
                     ex2 = getExchange(b);
-                    if (ex == null||ex2==null)
+                    if (ex == null)
                     {
-                       throw new Exception("Exchange does not exist");
+                       throw new Exception("Error - No exchange with identifier "+a+" found in the network");
+                    }
+                    if (ex2==null)
+                    {
+                       throw new Exception("Error - No exchange with identifier "+b+" found in the network");
                     }
                     ex3 = lowestRouter(ex, ex2);
                     str = "queryL"+actionMessage.substring(1)+": "+Integer.toString(ex3.uid);
@@ -297,16 +308,20 @@ public class RoutingMapTree
                     b = sc.nextInt();
                     m = root.mobps.getMobilePhone(a);
                     m1 = root.mobps.getMobilePhone(b);
-                    if(m==null||m1==null)
+                    if(m==null)
                     {
-                        throw new Exception("Mobile does not exist");
+                        throw new Exception("Error - No mobile phone with identifier "+a+" found in the network");
+                    }
+                    if(m1==null)
+                    {
+                        throw new Exception("Error - No mobile phone with identifier "+b+" found in the network");
                     }
                     ExchangeList el = routeCall(m,m1);
                     Node ptr = new Node();
                     ptr = el.ell.head;
                     String list = "";
                     if(ptr == null)
-                        throw new Exception("Cannot route call");
+                        throw new Exception("Error - Cannot route call");
                     else
                     {
                         while(ptr!=null)
@@ -324,17 +339,17 @@ public class RoutingMapTree
                     m = root.mobps.getMobilePhone(a);
                     if(m==null)
                     {
-                        throw new Exception("Mobile does not exist");
+                        throw new Exception("Error - No mobile phone with identifier "+a+" found in the network");
                     }
                     ex = getExchange(b);
                     if (ex == null)
                     {
-                       throw new Exception("Exchange does not exist");
+                       throw new Exception("Error - No exchange with identifier "+b+" found in the network");
                     }
                     movePhone(m, ex);
                     break;                    
                 default:
-                    System.out.println("Wrong Action Statement");
+                    System.out.println("Error - Wrong Action Statement");
                     break;
             }
         } catch (Exception e) {
