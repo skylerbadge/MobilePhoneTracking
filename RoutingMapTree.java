@@ -119,12 +119,10 @@ public class RoutingMapTree
             return a;
         Exchange prta = a.parent;
         Exchange prtb = b.parent;
-        // childll not common
         while(prta!=null && prtb!=null)
         {
             if(prta==prtb)
                 return prta;
-            //System.out.println(ptr);
             prta=prta.parent;
             prtb=prtb.parent;
         }
@@ -179,17 +177,18 @@ public class RoutingMapTree
             b.addMobile(a);
         }
     }
-    public void performAction(String actionMessage) {
+    public String performAction(String actionMessage) {
         Scanner sc = new Scanner(actionMessage);
         String action = sc.next();
         int a,b;
         Exchange ex,ex2,ex3;
         MobilePhone m,m1;
         String str = "";
-        try {
             switch(action)
             {
+                
                 case "addExchange":
+                    try{
                     a = sc.nextInt();
                     b = sc.nextInt();
                     ex = getExchange(a);
@@ -202,8 +201,12 @@ public class RoutingMapTree
                         ex2 = new Exchange(b);
                         ex.addChild(ex2);
                     }
+                    } catch (Exception e) {
+                    return (actionMessage+": "+e.getMessage());
+                    }
                     break;
                 case "switchOnMobile":
+                    try{
                     a = sc.nextInt();
                     b = sc.nextInt();
                     ex = getExchange(b);
@@ -234,8 +237,12 @@ public class RoutingMapTree
                             switchOn(mob, ex);
                         }
                     }
+                    } catch (Exception e) {
+                    return (actionMessage+": "+e.getMessage());
+                    }
                     break;
                 case  "switchOffMobile":
+                    try{
                     a = sc.nextInt();
                     if(root.mobps.getMobilePhone(a)==null)
                     {
@@ -245,8 +252,12 @@ public class RoutingMapTree
                     {
                         switchOff(root.mobps.getMobilePhone(a));
                     }               
+                    } catch (Exception e) {
+                    return (actionMessage+": "+e.getMessage());
+                    }
                     break;
                 case "queryNthChild":
+                    try{
                     a = sc.nextInt();
                     b = sc.nextInt();
                     ex = getExchange(a);
@@ -265,8 +276,12 @@ public class RoutingMapTree
                             str = actionMessage+": "+Integer.toString(ex2.uid);
                         }
                     }
+                    } catch (Exception e) {
+                    return (actionMessage+": "+e.getMessage());
+                    }
                     break;
                 case "queryMobilePhoneSet":
+                    try{
                     a = sc.nextInt();
                     ex = getExchange(a);
                     if (ex == null)
@@ -276,8 +291,12 @@ public class RoutingMapTree
                     else{
                         str = actionMessage+": "+ex.mobps.displaymob();
                     }
+                    } catch (Exception e) {
+                    return (actionMessage+": "+e.getMessage());
+                    }
                     break;
                 case "findPhone":
+                    try{
                     a = sc.nextInt();
                     m = root.mobps.getMobilePhone(a);
                     if(m==null)
@@ -286,8 +305,12 @@ public class RoutingMapTree
                     }
                     ex = findPhone(m);
                     str = "queryF"+actionMessage.substring(1)+": "+Integer.toString(ex.uid);
+                    } catch (Exception e) {
+                    return ("queryF"+actionMessage.substring(1)+": "+e.getMessage());
+                    }
                     break;
                 case "lowestRouter":
+                    try{
                     a = sc.nextInt();
                     b = sc.nextInt();
                     ex = getExchange(a);
@@ -302,8 +325,12 @@ public class RoutingMapTree
                     }
                     ex3 = lowestRouter(ex, ex2);
                     str = "queryL"+actionMessage.substring(1)+": "+Integer.toString(ex3.uid);
+                    } catch (Exception e) {
+                    return ("queryL"+actionMessage.substring(1)+": "+e.getMessage());
+                    }
                     break;                    
                 case "findCallPath":
+                    try{
                     a = sc.nextInt();
                     b = sc.nextInt();
                     m = root.mobps.getMobilePhone(a);
@@ -332,8 +359,12 @@ public class RoutingMapTree
                         list = list.substring(2);
                     }
                     str = "queryF"+actionMessage.substring(1)+": "+list;
+                    } catch (Exception e) {
+                    return ("queryF"+actionMessage.substring(1)+": "+e.getMessage());
+                    }
                     break;
                 case "movePhone":
+                    try{
                     a = sc.nextInt();
                     b = sc.nextInt();
                     m = root.mobps.getMobilePhone(a);
@@ -347,15 +378,13 @@ public class RoutingMapTree
                        throw new Exception("Error - No exchange with identifier "+b+" found in the network");
                     }
                     movePhone(m, ex);
+                    } catch (Exception e) {
+                    return ("queryM"+actionMessage.substring(1)+": "+e.getMessage());
+                    }
                     break;                    
                 default:
-                    System.out.println("Error - Wrong Action Statement");
-                    break;
+                    return ("Error - Wrong Action Statement");
             }
-        } catch (Exception e) {
-            System.out.println(actionMessage+": "+e.getMessage());
-        }
-        if(str!="")
-            System.out.println(str);
+        return str;
     }
 }

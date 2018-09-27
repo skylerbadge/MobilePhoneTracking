@@ -14,7 +14,7 @@ public class assn3checker
 			br = new BufferedReader(new FileReader("actions.txt"));
 
 			while ((actionString = br.readLine()) != null) {
-				r.performAction(actionString);
+                            System.out.println(r.performAction(actionString));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
